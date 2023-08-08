@@ -2,15 +2,117 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "base",
-      "displayName": "base",
-      "description": "",
-      "hidden": false,
+      "name": "linux-base-configure",
+      "displayName": "Linux Debug",
+      "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
+      "hidden": true,
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      },
+      "environment": {
+        "PATH": "${sourceDir}/env/bin:$penv{PATH}"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
+    },
+    {
+      "name": "linux-base-host",
+      "hidden": true,
+      "inherits": "linux-base-configure",
+      "cacheVariables": {
+        "ETNA_ATOMIZER_CROSS_COMPILE": "OFF"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-base-target",
+      "hidden": true,
+      "inherits": "linux-base-configure",
+      "cacheVariables": {
+        "ETNA_ATOMIZER_CROSS_COMPILE": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "toolchainFile": "${sourceDir}/Toolchain.cmake"
+    },
+    {
+      "name": "linux-host-debug",
+      "inherits": "linux-base-host",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-host-relwithdebinfo",
+      "inherits": "linux-base-host",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-target-debug",
+      "inherits": "linux-base-target",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-target-relwithdebinfo",
+      "inherits": "linux-base-target",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-host-debug-build",
+      "configurePreset": "linux-host-debug"
+    },
+    {
+      "name": "linux-target-debug-build",
+      "configurePreset": "linux-target-debug"
+    },
+    {
+      "name": "linux-host-relwithdebinfo-build",
+      "configurePreset": "linux-host-relwithdebinfo"
+    },
+    {
+      "name": "linux-target-relwithdebinfo-build",
+      "configurePreset": "linux-target-relwithdebinfo"
     }
   ]
 }
