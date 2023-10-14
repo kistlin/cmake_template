@@ -1,11 +1,13 @@
-SET(CMAKE_CXX_STANDARD 17)
-
 #add_subdirectory(statemachine)
 
 project (cppscratch)
 set(PROJECT_NAME_LIB ${PROJECT_NAME}lib)
 
 set(SOURCES
+        algorithms.cpp
+        async.cpp
+        MyClass.cpp
+        smart_pointer.cpp
         template.cpp
         )
 
@@ -15,7 +17,6 @@ target_include_directories(${PROJECT_NAME_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR
 add_executable(${PROJECT_NAME}
         main.cpp
         )
-
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME_LIB})
 
 set(SOURCES_STATEMACHINE
